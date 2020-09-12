@@ -1,10 +1,24 @@
-from flask import session
+import requests 
+#from flask import session
 
 _DEFAULT_ITEMS = [
     { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
     { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
 ]
 
+def get_token():
+    f = open("todo_app\\data\\key.gitignore", "r")
+    for x in f:
+        if x.startswith("token"):
+            token = x[-64:70]
+    return token.rstrip("\n")
+
+def get_key():
+    f = open("todo_app\\data\\key.gitignore", "r")
+    for x in f:
+        if x.startswith("key"):
+           key = x[-33:37]
+    return key.rstrip("\n")
 
 def get_items():
     """
@@ -13,7 +27,22 @@ def get_items():
     Returns:
         list: The list of saved items.
     """
-    return session.get('items', _DEFAULT_ITEMS)
+    apikey = get_key()
+    apitoken = get_token()
+    url = "https://api.trello.com/1/boards/c7trSbnB/cards"
+
+    query = {
+    'key': str(apikey),
+    'token': str(apitoken)
+    }
+
+    response = requests.request(
+    "GET",
+    url,
+    params=query
+    )
+
+    return response.json()
 
 
 def get_item(id):
@@ -40,19 +69,23 @@ def add_item(title):
     Returns:
         item: The saved item.
     """
-    items = get_items()
+    url = "https://api.trello.com/1/cards"
 
-    # Determine the ID for the item based on that of the previously added item
-    id = items[-1]['id'] + 1 if items else 0
+    apikey = get_key()
+    apitoken = get_token()
 
-    item = { 'id': id, 'title': title, 'status': 'Not Started' }
+    query = {
+    'key': apikey,
+    'token': apitoken,
+    'idList': '5f5be2d2c3c4723ac911bbc9',
+    'name': title
+    }
 
-    # Add the item to the list
-    items.append(item)
-    session['items'] = items
-
-    return item
-
+    requests.request(
+    "POST",
+    url,
+    params=query
+    )
 
 def save_item(item):
     """
@@ -70,10 +103,24 @@ def save_item(item):
 
 
 def complete_item(id):
-    item = get_item(id)
+    apikey = get_key()
+    apitoken = get_token()
 
-    if item != None:
-        item['status'] = 'Completed'
-        save_item(item)
+    url = "https://api.trello.com/1/cards/" + id
 
-    return item
+    headers = {
+    "Accept": "application/json"
+    }
+
+    query = {
+    'key': apikey,
+    'token': apitoken,
+    'idList': '5f5be2d2c3c4723ac911bbcb'
+    }
+
+    requests.request(
+    "PUT",
+    url,
+    headers=headers,
+    params=query
+    )

@@ -33,9 +33,11 @@
         {% for item in items %}
           <li class="list-group-item flex-column">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mt-1 mb-1">{{ item.title }}</h5>
-              {% if item.status != 'Completed' %}
+              <h5 class="mt-1 mb-1">{{ item.name }}</h5>
+              {% if item.idList != '5f5be2d2c3c4723ac911bbcb' %}
                 <a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Complete</a>
+              {% else %}
+              <a href="" class="btn btn-sm btn-primary">Complete</a>
               {% endif %}
             </div>
           </li>
