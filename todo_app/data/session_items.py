@@ -26,8 +26,8 @@ def get_items():
     url = "https://api.trello.com/1/boards/c7trSbnB/cards"
 
     query = {
-    'key': str(apikey),
-    'token': str(apitoken)
+    'key': apikey,
+    'token': apitoken
     }
 
     response = requests.request(
@@ -80,6 +80,29 @@ def complete_item(id):
     'key': apikey,
     'token': apitoken,
     'idList': '5f5be2d2c3c4723ac911bbcb'
+    }
+
+    requests.request(
+    "PUT",
+    url,
+    headers=headers,
+    params=query
+    )
+
+def doing_item(id):
+    apikey = get_key()
+    apitoken = get_token()
+
+    url = "https://api.trello.com/1/cards/" + id
+
+    headers = {
+    "Accept": "application/json"
+    }
+
+    query = {
+    'key': apikey,
+    'token': apitoken,
+    'idList': '5f5be2d2c3c4723ac911bbca'
     }
 
     requests.request(

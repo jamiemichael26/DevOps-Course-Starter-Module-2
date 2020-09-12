@@ -34,10 +34,15 @@
           <li class="list-group-item flex-column">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mt-1 mb-1">{{ item.name }}</h5>
-              {% if item.idList != '5f5be2d2c3c4723ac911bbcb' %}
+              {% if item.idList == '5f5be2d2c3c4723ac911bbc9' %}
+                <h6 class="mt-1 mb-1">To Do</h6>
+                <a href="{{ url_for('doing_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Doing</a>
+              {% elif item.idList == '5f5be2d2c3c4723ac911bbca' %}
+                <h6 class="mt-1 mb-1">Doing</h6>  
                 <a href="{{ url_for('complete_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Complete</a>
               {% else %}
-              <a href="" class="btn btn-sm btn-primary">Completed</a>
+                <h6 class="mt-1 mb-1">Completed</h6>
+                <a href="{{ url_for('doing_item', id=item.id) }}" class="btn btn-sm btn-primary">Mark as Doing</a> 
               {% endif %}
             </div>
           </li>

@@ -25,6 +25,11 @@ def complete_item(id):
     session.complete_item(id)
     return redirect(url_for('index'))
 
+@app.route('/items/<id>/doing')
+def doing_item(id):
+    session.doing_item(id)
+    return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run()
